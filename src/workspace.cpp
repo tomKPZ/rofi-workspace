@@ -28,31 +28,28 @@
 
 namespace {
 
-class Workspace {
+class WorkspaceMode {
  public:
-  Workspace() {
-    calculator.loadGlobalDefinitions();
-    calculator.loadLocalDefinitions();
-  }
+  WorkspaceMode() {}
 
-  ~Workspace() {}
+  ~WorkspaceMode() {}
 
   static int ModeInit(Mode* sw) {
-    Workspace* pd = GetInstance(sw);
+    WorkspaceMode* pd = GetInstance(sw);
     if (!pd)
-      mode_set_private_data(sw, reinterpret_cast<void*>(new Workspace()));
+      mode_set_private_data(sw, reinterpret_cast<void*>(new WorkspaceMode()));
     return true;
   }
 
   static void ModeDestroy(Mode* sw) {
-    Workspace* pd = GetInstance(sw);
+    WorkspaceMode* pd = GetInstance(sw);
     if (pd) {
       delete pd;
       mode_set_private_data(sw, nullptr);
     }
   }
 
-  static unsigned int ModeGetNumEntries(const Mode* sw) { return 1; }
+  static unsigned int ModeGetNumEntries(const Mode* sw) { return 0; }
 
   static ModeMode ModeResult(Mode* sw,
                              int menu_entry,
@@ -64,7 +61,7 @@ class Workspace {
   static int TokenMatch(const Mode* sw,
                         rofi_int_matcher** tokens,
                         unsigned int index) {
-    return GetInstance(sw)->TokenMatch();
+    return 0;
   }
 
   static char* GetDisplayValue(const Mode* sw,
@@ -72,40 +69,15 @@ class Workspace {
                                int* state,
                                GList** attr_list,
                                int get_entry) {
-    return GetInstance(sw)->GetDisplayValue();
+    return nullptr;
   }
 
-  static char* PreprocessInput(Mode* sw, const char* input) {
-    return GetInstance(sw)->PreprocessInput(input);
-  }
+  static char* PreprocessInput(Mode* sw, const char* input) { return nullptr; }
 
  private:
-  static Workspace* GetInstance(const Mode* sw) {
-    return reinterpret_cast<Workspace*>(mode_get_private_data(sw));
+  static WorkspaceMode* GetInstance(const Mode* sw) {
+    return reinterpret_cast<WorkspaceMode*>(mode_get_private_data(sw));
   }
-
-  int TokenMatch() { return result.has_value(); }
-
-  char* GetDisplayValue() const {
-    return strdup(result.has_value() ? result.value().c_str() : "");
-  }
-
-  char* PreprocessInput(const char* input) {
-    if (input && input[0])
-      result = calculator.calculateAndPrint(input, 100);
-    CalculatorMessage* message;
-    while (message = calculator.message()) {
-      calculator.nextMessage();
-      if (message->type() == MESSAGE_WARNING ||
-          message->type() == MESSAGE_ERROR) {
-        result = std::nullopt;
-      }
-    }
-    return GetDisplayValue();
-  }
-
-  Calculator calculator;
-  std::optional<std::string> result;
 };
 
 }  // namespace
@@ -115,15 +87,15 @@ Mode mode{
     const_cast<char*>(&"workspace"[0]),
     "display-workspace",
     const_cast<char*>(&"workspace"[0]),
-    Workspace::ModeInit,
-    Workspace::ModeDestroy,
-    Workspace::ModeGetNumEntries,
-    Workspace::ModeResult,
-    Workspace::TokenMatch,
-    Workspace::GetDisplayValue,
+    WorkspaceMode::ModeInit,
+    WorkspaceMode::ModeDestroy,
+    WorkspaceMode::ModeGetNumEntries,
+    WorkspaceMode::ModeResult,
+    WorkspaceMode::TokenMatch,
+    WorkspaceMode::GetDisplayValue,
     nullptr,
     nullptr,
-    Workspace::PreprocessInput,
+    WorkspaceMode::PreprocessInput,
     nullptr,
     nullptr,
     nullptr,
