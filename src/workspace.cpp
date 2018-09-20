@@ -1,4 +1,4 @@
-// rofi-qalc: A qalculator plugin for rofi
+// rofi-workspace: An X11 workspace plugin for rofi
 // Copyright (C) 2018 <tomKPZ@gmail.com>
 //
 // This program is free software; you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 // https://github.com/DaveDavenport/rofi/pull/848
 #include <rofi/mode-private.h>
 
-#include <libqalculate/Calculator.h>
 #include <iostream>
 #include <memory>
 #include <optional>
@@ -29,24 +28,24 @@
 
 namespace {
 
-class Qalc {
+class Workspace {
  public:
-  Qalc() {
+  Workspace() {
     calculator.loadGlobalDefinitions();
     calculator.loadLocalDefinitions();
   }
 
-  ~Qalc() {}
+  ~Workspace() {}
 
   static int ModeInit(Mode* sw) {
-    Qalc* pd = GetInstance(sw);
+    Workspace* pd = GetInstance(sw);
     if (!pd)
-      mode_set_private_data(sw, reinterpret_cast<void*>(new Qalc()));
+      mode_set_private_data(sw, reinterpret_cast<void*>(new Workspace()));
     return true;
   }
 
   static void ModeDestroy(Mode* sw) {
-    Qalc* pd = GetInstance(sw);
+    Workspace* pd = GetInstance(sw);
     if (pd) {
       delete pd;
       mode_set_private_data(sw, nullptr);
@@ -81,8 +80,8 @@ class Qalc {
   }
 
  private:
-  static Qalc* GetInstance(const Mode* sw) {
-    return reinterpret_cast<Qalc*>(mode_get_private_data(sw));
+  static Workspace* GetInstance(const Mode* sw) {
+    return reinterpret_cast<Workspace*>(mode_get_private_data(sw));
   }
 
   int TokenMatch() { return result.has_value(); }
@@ -113,18 +112,18 @@ class Qalc {
 
 Mode mode{
     ABI_VERSION,
-    const_cast<char*>(&"qalc"[0]),
-    "display-qalc",
-    const_cast<char*>(&"qalc"[0]),
-    Qalc::ModeInit,
-    Qalc::ModeDestroy,
-    Qalc::ModeGetNumEntries,
-    Qalc::ModeResult,
-    Qalc::TokenMatch,
-    Qalc::GetDisplayValue,
+    const_cast<char*>(&"workspace"[0]),
+    "display-workspace",
+    const_cast<char*>(&"workspace"[0]),
+    Workspace::ModeInit,
+    Workspace::ModeDestroy,
+    Workspace::ModeGetNumEntries,
+    Workspace::ModeResult,
+    Workspace::TokenMatch,
+    Workspace::GetDisplayValue,
     nullptr,
     nullptr,
-    Qalc::PreprocessInput,
+    Workspace::PreprocessInput,
     nullptr,
     nullptr,
     nullptr,

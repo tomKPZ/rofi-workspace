@@ -1,4 +1,4 @@
-AC_INIT([rofi-qalc], [0.0.1], [https://github.com/tomKPZ/rofi-qalc/issues],[],[https://github.com/tomKPZ/rofi-qalc])
+AC_INIT([rofi-workspace], [0.0.1], [https://github.com/tomKPZ/rofi-workspace/issues],[],[https://github.com/tomKPZ/rofi-workspace])
 
 AC_CONFIG_HEADER([config.h])
 
@@ -47,7 +47,6 @@ dnl ---------------------------------------------------------------------
 dnl PKG_CONFIG based dependencies  
 dnl ---------------------------------------------------------------------
 PKG_CHECK_MODULES([rofi], [rofi])
-PKG_CHECK_MODULES([QALCULATE], [libqalculate >= 1.0.0])
 
 [rofi_PLUGIN_INSTALL_DIR]="`$PKG_CONFIG --variable=pluginsdir rofi`"
 AC_SUBST([rofi_PLUGIN_INSTALL_DIR])
