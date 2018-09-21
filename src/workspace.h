@@ -15,8 +15,16 @@
 // along with this program; if not, write to the Free Software Foundation,
 // Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 
-#include "workspace.h"
+typedef struct xcb_connection_t xcb_connection_t;
 
-Workspace::Workspace() {}
+class Workspace {
+public:
+  Workspace();
+  ~Workspace();
 
-Workspace::~Workspace() {}
+private:
+  Workspace(const Workspace&) = delete;
+  Workspace& operator=(const Workspace&) = delete;
+
+  xcb_connection_t* conn;
+};
