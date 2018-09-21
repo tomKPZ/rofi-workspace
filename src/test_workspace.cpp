@@ -15,20 +15,9 @@
 // along with this program; if not, write to the Free Software Foundation,
 // Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 
-#include <cstdint>
+#include "workspace.h"
 
-typedef struct xcb_connection_t xcb_connection_t;
-typedef uint32_t xcb_window_t;
-
-class Workspace {
- public:
-  Workspace();
-  ~Workspace();
-
- private:
-  Workspace(const Workspace&) = delete;
-  Workspace& operator=(const Workspace&) = delete;
-
-  xcb_connection_t* connection;
-  xcb_window_t root_window;
-};
+int main() {
+  Workspace workspace;
+  return 0;
+}

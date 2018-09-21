@@ -127,3 +127,4 @@ config.h
 libtool
 src/.deps
 src/.dirstamp
+test_workspace
