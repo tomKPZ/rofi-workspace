@@ -47,6 +47,7 @@ dnl ---------------------------------------------------------------------
 dnl PKG_CONFIG based dependencies  
 dnl ---------------------------------------------------------------------
 PKG_CHECK_MODULES([rofi], [rofi])
+PKG_CHECK_MODULES([xcb], [xcb])
 
 [rofi_PLUGIN_INSTALL_DIR]="`$PKG_CONFIG --variable=pluginsdir rofi`"
 AC_SUBST([rofi_PLUGIN_INSTALL_DIR])

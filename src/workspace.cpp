@@ -20,6 +20,7 @@
 // TODO: Sort includes once the below change lands:
 // https://github.com/DaveDavenport/rofi/pull/848
 #include <rofi/mode-private.h>
+#include <xcb/xcb.h>
 
 #include <iostream>
 #include <memory>
